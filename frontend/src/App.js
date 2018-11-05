@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { fromJS } from 'immutable';
+import axios from 'axios';
 
 class App extends Component {
+  componentDidMount () {
+    axios.get('//localhost:3000')
+        .then(res => {
+          console.log(res);
+        });
+  }
   render() {
     return (
       <div className="App">
