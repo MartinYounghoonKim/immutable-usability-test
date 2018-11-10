@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { fromJS } from 'immutable';
 import axios from 'axios';
+import Child from './Child';
 
 class App extends Component {
   state = {
@@ -15,13 +16,25 @@ class App extends Component {
           });
         });
   }
-  check = () => {
-    console.log(this.state.items)
+  update = ({ id, about }) => {
+    const targetIndex = this.state.items.findIndex(item => item.get('_id') === id);
+    const items = this.state.items.update(targetIndex, item => item.set('about', 'test'));
+    this.setState({ items });
   }
   render() {
+    const {
+      items
+    } = this.state;
     return (
       <div className="App">
-        <button onClick={this.check}>Check</button>
+        {items.map((item) => (
+            <Child
+                key={item.get('_id')}
+                id={item.get('_id')}
+                about={item.get('about')}
+                onClick={this.update}
+            />
+        ))}
       </div>
     );
   }
