@@ -4,14 +4,25 @@ const Child = (
     {
       id,
       about,
-      onClick
+      editing,
+      onChange,
+      editingId,
     }
 ) => {
   return (
       <div>
-        <ul>
-          <li>{about}<button onClick={() => onClick({ id, about: 'test' })}>Edit</button></li>
-        </ul>
+        <p onDoubleClick={() => editing(id)}>{about}</p>
+        {editingId === id && (
+            <textarea
+            type="text"
+            value={about}
+            onChange={(e) => onChange({
+              e,
+              id,
+              about: e.target.value
+            })}
+          />
+        )}
       </div>
 
   )

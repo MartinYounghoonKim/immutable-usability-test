@@ -6,8 +6,9 @@ import Child from './Child';
 
 class App extends Component {
   state = {
-    items: []
-  }
+    items: [],
+    editingId: undefined
+  };
   componentDidMount () {
     axios.get('//localhost:3000/data')
         .then(res => {
@@ -16,14 +17,18 @@ class App extends Component {
           });
         });
   }
-  update = ({ id, about }) => {
+  editing = (editingId) => {
+    this.setState({ editingId });
+  };
+  onChange = ({ e, id, about }) => {
     const targetIndex = this.state.items.findIndex(item => item.get('_id') === id);
-    const items = this.state.items.update(targetIndex, item => item.set('about', 'test'));
+    const items = this.state.items.update(targetIndex, item => item.set('about', about));
     this.setState({ items });
-  }
+  };
   render() {
     const {
-      items
+      items,
+      editingId
     } = this.state;
     return (
       <div className="App">
@@ -31,8 +36,10 @@ class App extends Component {
             <Child
                 key={item.get('_id')}
                 id={item.get('_id')}
+                editingId={editingId}
                 about={item.get('about')}
-                onClick={this.update}
+                editing={this.editing}
+                onChange={this.onChange}
             />
         ))}
       </div>
